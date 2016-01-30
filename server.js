@@ -105,6 +105,36 @@ app.post("/from_roman", function(req, res){
   res.json(out);
 });
 
+app.post("/to_roman", function(req, res){
+  var nums = req.body, out = [];
+  var vals = [
+    {num: 1000  ,rom: "m"},
+    {num: 900   ,rom: "cm"},
+    {num: 500   ,rom: "d"},
+    {num: 400   ,rom: "cd"},
+    {num: 100   ,rom: "c"},
+    {num: 90    ,rom: "xc"},
+    {num: 50    ,rom: "l"},
+    {num: 40    ,rom: "xl"},
+    {num: 10    ,rom: "x"},
+    {num: 9     ,rom: "ix"},
+    {num: 5     ,rom: "v"},
+    {num: 4     ,rom: "iv"},
+    {num: 1     ,rom: "i"}
+  ]
+  nums.forEach(function(num){
+    var tot = "";
+    vals.forEach(function(val){
+      while(num - val.num >= 0){
+        num = num - val.num;
+        tot += val.rom;
+      }
+    });
+    out.push(tot);
+  });
+  res.json(out);
+});
+
 app.listen(process.env.PORT || 3000, function(){
   console.log("Listening!");
 });

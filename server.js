@@ -169,6 +169,26 @@ app.post("/bowling", function(req, res){
   res.json(out)
 });
 
+app.post("/factors", function(req, res){
+  var nums = req.body, out = [];
+  nums.forEach(function(orig){
+    var factors = [], num = orig, tot = 0;
+    var i = 2, l = 100;
+    if(orig <= 1) return (out.push([]));
+    for(i = 2; i < l; i++){
+      while(num % i === 0){
+        factors.push(i);
+        num = (num / i);
+        if(num > orig || num < 0) break;
+      }
+    }
+    out.push(factors);
+  });
+  console.log(JSON.stringify(nums));
+  console.log(out);
+  res.json(out);
+});
+
 app.listen(process.env.PORT || 3000, function(){
   console.log("Listening!");
 });

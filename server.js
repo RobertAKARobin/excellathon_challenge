@@ -135,6 +135,40 @@ app.post("/to_roman", function(req, res){
   res.json(out);
 });
 
+app.post("/bowling", function(req, res){
+  var games = req.body, out = [];
+  games.forEach(function(rolls){
+    var frame = 0, gameTot = 0, frameTot = 0, frameTries = 0, maxFrames = 10;
+    var prevStatus = "";
+    rolls.forEach(function(roll){
+      if(frame > maxFrames) return;
+      frameTot += roll;
+      frameTries += 1;
+      if(prevStatus === "spare" && frameTries === 1) gameTot += roll;
+      if(prevStatus === "strike" && (frameTries === 2 || roll === 10)) gameTot += frameTot;
+      if(frame === 10 && (prevStatus === "strike" || prevStatus === "spare")) maxFrames = 11;
+      if(frameTot === 10){
+        if(frameTries === 1) prevStatus = "strike";
+        else if(frameTries === 2) prevStatus = "spare";
+        nextFrame();
+      }else if(frameTries === 2){
+        nextFrame();
+      }
+    });
+    out.push(gameTot);
+
+    function nextFrame(){
+      frame += 1;
+      frameTries = 0;
+      gameTot += frameTot;
+      frameTot = 0;
+    }
+  });
+  console.log(JSON.stringify(games));
+  console.log(JSON.stringify(out));
+  res.json(out)
+});
+
 app.listen(process.env.PORT || 3000, function(){
   console.log("Listening!");
 });

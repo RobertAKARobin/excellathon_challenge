@@ -71,6 +71,40 @@ app.post("/palindrome", function(req, res){
   res.json(out);
 });
 
+app.post("/from_roman", function(req, res){
+  var nums = req.body, out = [];
+  var vals = {
+    "iv": 4,
+    "ix": 9,
+    "i": 1,
+    "v": 5,
+    "xl": 40,
+    "xc": 90,
+    "x": 10,
+    "l": 50,
+    "cd": 400,
+    "cm": 900,
+    "d": 500,
+    "c": 100,
+    "m": 1000
+  }
+  nums.forEach(function(str){
+    var roman, val, tot = 0;
+    str = str.toLowerCase();
+    for(roman in vals){
+      val = vals[roman];
+      str = str.replace(new RegExp(roman, "g"), function(){
+        tot += val;
+        return "";
+      });
+    }
+    out.push(tot);
+  });
+  console.log(JSON.stringify(nums))
+  console.log(out)
+  res.json(out);
+});
+
 app.listen(process.env.PORT || 3000, function(){
   console.log("Listening!");
 });

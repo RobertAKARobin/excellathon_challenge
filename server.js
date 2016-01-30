@@ -59,9 +59,16 @@ app.post("/anagram", function(req, res){
     }());
     out.push(test);
   });
-  console.log(pairs)
-  console.log(out)
   res.json(out)
+});
+
+app.post("/palindrome", function(req, res){
+  var words = req.body, out = [];
+  words.forEach(function(word){
+    var reverse = word.split("").reverse().join("");
+    out.push(word === reverse);
+  });
+  res.json(out);
 });
 
 app.listen(process.env.PORT || 3000, function(){

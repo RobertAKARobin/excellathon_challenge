@@ -42,6 +42,28 @@ app.post("/fibonacci", function(req, res){
   res.json(out);
 });
 
+app.post("/anagram", function(req, res){
+  var pairs = req.body, out = [];
+  pairs.forEach(function(pair){
+    var a = pair[0].replace(/\s/g,"").toLowerCase().split("");
+    var b = pair[1].replace(/\s/g,"").toLowerCase().split("");
+    var test = (function(){
+      var i, l = a.length, bi;
+      if(a.length !== b.length) return false;
+      for(i = 0; i < l; i++){
+        bi = b.indexOf(a[i]);
+        if(bi < 0) return false;
+        else b[bi] = null;
+      }
+      return true;
+    }());
+    out.push(test);
+  });
+  console.log(pairs)
+  console.log(out)
+  res.json(out)
+});
+
 app.listen(process.env.PORT || 3000, function(){
   console.log("Listening!");
 });

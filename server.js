@@ -173,13 +173,17 @@ app.post("/factors", function(req, res){
   var nums = req.body, out = [];
   nums.forEach(function(orig){
     var factors = [], num = orig, tot = 0;
-    var i = 2, l = 100;
+    var i = 2, l = 101;
     if(orig <= 1) return (out.push([]));
-    for(i = 2; i < l; i++){
+    for(i = 2; i <= l; i++){
+      if(i === l && factors.length === 0){
+        factors.push(orig);
+        break;
+      }
       while(num % i === 0){
         factors.push(i);
         num = (num / i);
-        if(num > orig || num < 0) break;
+        if(num >= orig || num <= 0) break;
       }
     }
     out.push(factors);

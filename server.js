@@ -27,6 +27,21 @@ app.post("/fizzbuzz", function(req, res){
   res.json(out);
 });
 
+app.post("/fibonacci", function(req, res){
+  var nums = req.body, fib = [1, 1], out = [];
+  var max = Math.max.apply(null, nums);
+  var i, l2, l1, c;
+  for(i = 2; i < max + 1; i++){
+    l2 = fib[i - 2];
+    l1 = fib[i - 1];
+    fib.push(l2 + l1);
+  }
+  for(i = 0; i < nums.length; i++){
+    out.push(fib[nums[i] - 1]);
+  }
+  res.json(out);
+});
+
 app.listen(process.env.PORT || 3000, function(){
   console.log("Listening!");
 });
